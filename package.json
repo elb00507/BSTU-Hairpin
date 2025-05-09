@@ -5,7 +5,8 @@
 	"author": "elb00507@g.bstu.by",
 	"scripts": {
 		"build": "webpack",
-		"dev": "webpack serve --mode=development"
+		"dev": "webpack serve --mode=development",
+		"deploy": "firebase deploy"
 	},
 	"devDependencies": {
 		"copy-webpack-plugin": "^13.0.0",

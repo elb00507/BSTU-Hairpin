@@ -58,7 +58,10 @@ module.exports = (env, argv) => ({
 	plugins: [
 		new HtmlWebpackPlugin({ template: 'src/index.html' }),
 		new CopyPlugin({
-			patterns: [{ from: 'src/assets', to: 'assets' }],
+			patterns: [
+				{ from: 'src/assets', to: 'assets' },
+				{ from: 'src/404.html', to: '404.html' },
+			],
 		}),
 		new MiniCssPlugin({ filename: 'style.css' }),
 	],
