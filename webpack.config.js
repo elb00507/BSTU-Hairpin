@@ -1,8 +1,25 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssPlugin = require('mini-css-extract-plugin');
+
+const devServer = (isDev) => {
+	return isDev
+		? {
+				devServer: {
+					open: true,
+					hot: true,
+					port: 8080,
+					static: path.join(__dirname, 'dest'),
+				},
+		  }
+		: {};
+};
 
 module.exports = (env, argv) => ({
+	mode: argv.mode === 'development' ? 'development' : 'production',
+	devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+	...devServer(argv.mode === 'development'),
 	entry: './src/script.ts',
 
 	module: {
@@ -11,6 +28,19 @@ module.exports = (env, argv) => ({
 				test: /\.tsx?$/,
 				use: 'ts-loader',
 				exclude: /node_modules/,
+			},
+			{
+				test: /\.scss$/i,
+				use: [
+					MiniCssPlugin.loader,
+					{
+						loader: 'css-loader',
+						options: {
+							url: false,
+						},
+					},
+					'sass-loader',
+				],
 			},
 		],
 	},
@@ -30,5 +60,6 @@ module.exports = (env, argv) => ({
 		new CopyPlugin({
 			patterns: [{ from: 'src/assets', to: 'assets' }],
 		}),
+		new MiniCssPlugin({ filename: 'style.css' }),
 	],
 });
