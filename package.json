@@ -4,14 +4,20 @@
 	"private": true,
 	"author": "elb00507@g.bstu.by",
 	"scripts": {
-		"build": "webpack"
+		"build": "webpack",
+		"dev": "webpack serve --mode=development"
 	},
 	"devDependencies": {
 		"copy-webpack-plugin": "^13.0.0",
+		"css-loader": "^7.1.2",
 		"html-webpack-plugin": "^5.6.3",
+		"mini-css-extract-plugin": "^2.9.2",
+		"sass": "^1.87.0",
+		"sass-loader": "^16.0.5",
 		"ts-loader": "^9.5.2",
 		"typescript": "^5.8.3",
 		"webpack": "^5.99.8",
-		"webpack-cli": "^6.0.1"
+		"webpack-cli": "^6.0.1",
+		"webpack-dev-server": "^5.2.1"
 	}
 }
