@@ -1,0 +1,36 @@
+.footer {
+	padding: 20px;
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+	letter-spacing: 1px;
+	gap: 13%;
+
+	&__info {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		font-size: clamp(0.375rem, 0.2143rem + 0.8036vw, 0.9375rem);
+		gap: 6px;
+	}
+
+	&__made-on {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+
+		.footer__made-on-text,
+		.footer__figma-text {
+			font-size: clamp(0.4375rem, -0.0089rem + 2.2321vw, 2rem);
+			font-weight: 400;
+		}
+	}
+}
+
+.footer__figma-logo {
+	width: 43px;
+	height: 43px;
+	object-fit: contain;
+	filter: drop-shadow(0 0 4px #cccccc);
+}
