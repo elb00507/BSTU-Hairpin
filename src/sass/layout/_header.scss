@@ -3,11 +3,11 @@
 	position: relative;
 
 	.logo-link {
-		font-size: 38px;
+		font-size: clamp(1.25rem, 0.6818rem + 2.8409vw, 2.5rem);
 		font-weight: bold;
 		font-style: italic;
 		position: absolute;
-		left: 0;
+		left: 20px;
 		cursor: pointer;
 	}
 
