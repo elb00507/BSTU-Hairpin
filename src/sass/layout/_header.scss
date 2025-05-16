@@ -1,0 +1,29 @@
+.header {
+	padding: 25px 0;
+	position: relative;
+
+	.logo-link {
+		font-size: 38px;
+		font-weight: bold;
+		font-style: italic;
+		position: absolute;
+		left: 0;
+		cursor: pointer;
+	}
+
+	&__cont {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__nav {
+		display: flex;
+		gap: 35px;
+		a {
+			text-decoration: none;
+			color: #000;
+			font-size: 19px;
+		}
+	}
+}

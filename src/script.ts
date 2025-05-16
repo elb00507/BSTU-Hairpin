@@ -1,5 +1,6 @@
 import '../src/style.scss';
 import { Component } from './Abstract/Component';
+import { Header } from './Common/Header';
 
 declare global {
 	interface Window {
@@ -10,6 +11,8 @@ declare global {
 class App {
 	constructor(parent: HTMLElement) {
 		const wrap = new Component(parent, 'div', ['wrapper']);
+
+		new Header(wrap.root);
 	}
 }
 
