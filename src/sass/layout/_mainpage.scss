@@ -1,0 +1,36 @@
+.main {
+	&-page {
+		background: url('../../assets/bg-main.png') no-repeat center center;
+		background-size: cover;
+		height: calc(100vh - 70px);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		padding: 20px;
+		position: relative;
+	}
+
+	&__container-title1 {
+		position: absolute;
+		right: 50px;
+		top: 232px;
+
+		h1 {
+			font-size: 50px;
+			font-weight: 400;
+		}
+	}
+
+	&__container-title2 {
+		position: absolute;
+		right: 50px;
+		top: 335px;
+
+		h2 {
+			font-size: 64px;
+			font-weight: 400;
+		}
+	}
+}
