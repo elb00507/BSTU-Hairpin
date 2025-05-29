@@ -1,7 +1,9 @@
 import { Component } from '../Abstract/Component';
+import { LogicService } from '../Services/LogicService';
 
 export class MainPage extends Component {
-	constructor(parent: HTMLElement) {
+	stateUpdate: boolean = false;
+	constructor(parent: HTMLElement, private service: LogicService) {
 		super(parent, 'section', ['main-page']);
 
 		const titleContainerAll = new Component(this.root, 'div', ['main__cont']);
@@ -28,4 +30,13 @@ export class MainPage extends Component {
 			'wonderful'
 		);
 	}
+	renderWithUpdate(): void {
+		if (!this.stateUpdate) {
+			this.update();
+			this.stateUpdate = true;
+		}
+		this.render();
+	}
+
+	update(): void {}
 }

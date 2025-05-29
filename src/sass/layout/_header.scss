@@ -45,6 +45,11 @@
 	}
 }
 
+.logo-link {
+	text-decoration: none;
+	color: #000;
+}
+
 @media (max-width: 598px) {
 	.header {
 		&__menu-icon {
