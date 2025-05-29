@@ -2,6 +2,7 @@ import { Component } from '../Abstract/Component';
 
 export class Header extends Component {
 	private menuIcon: Component;
+	private isMenuOpen: boolean = false;
 	private mobileMenu: HTMLElement;
 	private mobileWrapper: HTMLElement;
 	constructor(parent: HTMLElement) {
@@ -76,5 +77,29 @@ export class Header extends Component {
 
 		this.menuIcon = new Component(this.root, 'div', ['header__menu-icon']);
 		this.menuIcon.root.innerHTML = '<span></span><span></span><span></span>';
+
+		this.menuIcon.root.addEventListener('click', () => this.toggleMenu());
+	}
+
+	private toggleMenu(): void {
+		this.isMenuOpen = !this.isMenuOpen;
+		this.updateMenuState();
+	}
+
+	private closeMenu(): void {
+		this.isMenuOpen = false;
+		this.updateMenuState();
+	}
+
+	private updateMenuState(): void {
+		if (this.isMenuOpen) {
+			this.mobileMenu.style.display = 'block';
+			document.body.style.overflow = 'hidden';
+			this.menuIcon.root.classList.add('active');
+		} else {
+			this.mobileMenu.style.display = 'none';
+			document.body.style.overflow = '';
+			this.menuIcon.root.classList.remove('active');
+		}
 	}
 }
