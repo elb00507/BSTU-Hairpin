@@ -12,7 +12,7 @@ export class LogicService extends Observer {
 		return data.types;
 	}
 
-	async updateGoodsByType(idGood: string): Promise<void> {
+	async updateGoodsByType(idGood: number): Promise<void> {
 		const data = await this.dbService.getGoodsByType(idGood);
 		const goods = data.goods;
 		goods.forEach((good) => {
@@ -21,6 +21,7 @@ export class LogicService extends Observer {
 				good.valueFields
 			);
 		});
+		this.disptach('updateGoodseOnPage', goods);
 	}
 
 	private joinTypesWithValues(
@@ -33,5 +34,10 @@ export class LogicService extends Observer {
 			goodJson[arrTypes[i][1]] = arrValues[i][1];
 		}
 		return goodJson;
+	}
+
+	async updateAllGoods(): Promise<void> {
+		const data = await this.dbService.getAllGoods();
+		this.disptach('updateGoodseOnPage', data.goods);
 	}
 }
