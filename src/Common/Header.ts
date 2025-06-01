@@ -1,16 +1,24 @@
 import { Component } from '../Abstract/Component';
+import { LogicService } from '../Services/LogicService';
 
 export class Header extends Component {
 	private menuIcon: Component;
 	private isMenuOpen: boolean = false;
 	private mobileMenu: HTMLElement;
 	private mobileWrapper: HTMLElement;
-	constructor(parent: HTMLElement) {
+	constructor(parent: HTMLElement, private service: LogicService) {
 		super(parent, 'header', ['header']);
 
 		const headerCont = new Component(this.root, 'div', ['header__cont']);
 
-		new Component(headerCont.root, 'a', ['logo-link'], 'hairpin');
+		new Component(
+			headerCont.root,
+			'a',
+			['logo-link'],
+			'hairpin',
+			['href'],
+			['#']
+		);
 
 		const headerNav = new Component(headerCont.root, 'div', ['header__nav']);
 
@@ -38,6 +46,8 @@ export class Header extends Component {
 				['href'],
 				[link.href]
 			);
+
+			linkComponent.root.addEventListener('click', () => this.closeMenu());
 		});
 
 		new Component(
