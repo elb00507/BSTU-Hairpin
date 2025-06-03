@@ -99,6 +99,6 @@ export class LogicService extends Observer {
 
 	openPageCatalog(): void {
 		this.disptach('updateGoodseOnPage');
-		window.location.hash = '#catalog';
+		window.location.hash = '#shop';
 	}
 }
