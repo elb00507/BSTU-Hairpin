@@ -12,20 +12,11 @@ export class DBService {
 		return data;
 	}
 
-	async getGoodsByType(idGood: number): Promise<TGoodsResponse> {
+	async getGoodsByType(idGood: string): Promise<TGoodsResponse> {
 		const response = await fetch(
 			this.domain +
 				'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=110&sgr_r=0&stst_=0&shead_=0&sadd_=5,158,85,' +
 				idGood
-		);
-		const data = (await response.json()) as TGoodsResponse;
-		return data;
-	}
-
-	async getAllGoods(): Promise<TGoodsResponse> {
-		const response = await fetch(
-			this.domain +
-				'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=110&sgr_r=0&stst_=0&shead_=0&sadd_=5,86,'
 		);
 		const data = (await response.json()) as TGoodsResponse;
 		return data;

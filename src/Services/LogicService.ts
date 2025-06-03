@@ -1,8 +1,18 @@
 import { Observer } from '../Abstract/Observer';
 import { DBService } from './DBService';
-import { TGood, TTypeField, TTypeGood, TValueField } from '../Abstract/Types';
+import {
+	TGood,
+	TTypeField,
+	TTypeGood,
+	TValueField,
+	TGoodResponse,
+} from '../Abstract/Types';
 
 export class LogicService extends Observer {
+	private originalGoods: TGoodResponse[] | null = null;
+	private filteredGoods: TGoodResponse[] | null = null;
+	private currentFilter: string | null = null;
+	private currentSortAsc: boolean | null = null;
 	constructor(private dbService: DBService) {
 		super();
 	}
@@ -12,8 +22,8 @@ export class LogicService extends Observer {
 		return data.types;
 	}
 
-	async updateGoodsByType(idGood: number): Promise<void> {
-		const data = await this.dbService.getGoodsByType(idGood);
+	async updateGoodsByType(idGood: string): Promise<void> {
+		const data = await this.dbService.getGoodsByType(idGood.toString());
 		const goods = data.goods;
 		goods.forEach((good) => {
 			(good as TGood)['fields'] = this.joinTypesWithValues(
@@ -21,7 +31,22 @@ export class LogicService extends Observer {
 				good.valueFields
 			);
 		});
-		this.disptach('updateGoodseOnPage', goods);
+		this.originalGoods = goods;
+		if (this.currentFilter) {
+			this.filteredGoods = goods.filter(
+				(good) => good.valueFields[0][1] === this.currentFilter
+			);
+
+			if (this.currentSortAsc !== null) {
+				this.filteredGoods = [...this.filteredGoods].sort((a, b) =>
+					this.currentSortAsc ? a.price - b.price : b.price - a.price
+				);
+			}
+		} else {
+			this.filteredGoods = goods;
+		}
+
+		this.disptach('updateGoodseOnPage', this.filteredGoods);
 	}
 
 	private joinTypesWithValues(
@@ -36,8 +61,34 @@ export class LogicService extends Observer {
 		return goodJson;
 	}
 
-	async updateAllGoods(): Promise<void> {
-		const data = await this.dbService.getAllGoods();
-		this.disptach('updateGoodseOnPage', data.goods);
+	sortGoodsByPrice(bool: boolean): void {
+		if (!this.filteredGoods) return;
+
+		this.currentSortAsc = bool;
+		this.filteredGoods = [...this.filteredGoods].sort((a, b) =>
+			bool ? a.price - b.price : b.price - a.price
+		);
+
+		this.disptach('updateGoodseOnPage', this.filteredGoods);
+	}
+
+	filterItemByTypeParfym(type: string): void {
+		if (!this.originalGoods) return;
+
+		if (type === 'all') {
+			this.currentFilter = null;
+			this.filteredGoods = [...this.originalGoods];
+		} else {
+			this.currentFilter = type;
+			this.filteredGoods = this.originalGoods.filter(
+				(good) => good.valueFields[0][1] === type
+			);
+		}
+
+		if (this.currentSortAsc !== null) {
+			this.sortGoodsByPrice(this.currentSortAsc);
+		}
+
+		this.disptach('updateGoodseOnPage', this.filteredGoods);
 	}
 }

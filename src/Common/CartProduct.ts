@@ -30,6 +30,19 @@ export class CartProduct extends Component {
 			'Стоимость: ' + priceCurrent + ' BYN'
 		);
 
+		new Component(
+			contentContainer.root,
+			'p',
+			['cart__text', 'abel'],
+			'Категория:'
+		);
+		new Component(
+			contentContainer.root,
+			'p',
+			['cart__size', 'abel'],
+			this.good.valueFields[0][1].toString()
+		);
+
 		const imageContainer = new Component(this.root, 'div', [
 			'product-card__image-container',
 		]);
