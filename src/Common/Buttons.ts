@@ -19,7 +19,7 @@ export class ButtonTypeGood extends Component {
 			['button__img'],
 			null,
 			['src', 'alt'],
-			[imagePath, 'btn']
+			[imagePath, '']
 		);
 
 		console.log(this.typeGood.id);
