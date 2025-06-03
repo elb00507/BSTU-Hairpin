@@ -5,6 +5,12 @@
 	align-items: center;
 	gap: 25px;
 
+	&__line {
+		display: flex;
+		justify-content: center;
+		gap: 15px;
+	}
+
 	&__wrapperDesc {
 		display: flex;
 		flex-direction: column;

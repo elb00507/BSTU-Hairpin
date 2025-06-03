@@ -19,7 +19,7 @@ export class ButtonTypeGood extends Component {
 			['button__img'],
 			null,
 			['src', 'alt'],
-			[imagePath, 'btn']
+			[imagePath, '']
 		);
 
 		console.log(this.typeGood.id);
@@ -27,7 +27,7 @@ export class ButtonTypeGood extends Component {
 		new Component(this.root, 'p', ['button__text'], this.typeGood.title);
 
 		this.root.onclick = () => {
-			service.updateGoodsByType(typeGood.id);
+			service.updateGoodsByType(typeGood.id.toString());
 		};
 	}
 }
