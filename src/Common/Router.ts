@@ -1,5 +1,6 @@
 import { Page } from '../Abstract/Interfaces';
 import { LogicService } from '../Services/LogicService';
+import { DetailsPage } from './DetailsPage';
 
 export class Router {
 	constructor(
@@ -17,11 +18,27 @@ export class Router {
 			page.remove();
 		});
 
-		const url = window.location.hash;
-		if (url in this.links) {
-			this.links[url].renderWithUpdate();
-		} else {
-			this.links[''].renderWithUpdate();
+		const url = window.location.hash.slice(1);
+		switch (url) {
+			case 'shop':
+				this.links['#shop'].renderWithUpdate();
+				break;
+			case 'details':
+				if ((this.links['#details'] as DetailsPage).isGoodInDetailsPage()) {
+					this.links['#details'].renderWithUpdate();
+				} else {
+					window.location.hash = '#shop';
+				}
+				break;
+			case 'cart':
+				this.links['#cart'].renderWithUpdate();
+				break;
+			case 'profile':
+				this.links['#profile'].renderWithUpdate();
+				break;
+			default:
+				this.links['#'].renderWithUpdate();
+				break;
 		}
 	}
 }

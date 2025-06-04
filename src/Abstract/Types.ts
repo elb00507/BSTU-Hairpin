@@ -24,6 +24,7 @@ export type TGoodResponse = {
 	title: string;
 	orderDB: number;
 	price: number;
+	photoLink: string;
 	valueFields: TValueField[];
 	typeFields: TTypeField[];
 };

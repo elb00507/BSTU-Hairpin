@@ -47,7 +47,7 @@ export class CartProduct extends Component {
 			'product-card__image-container',
 		]);
 
-		new Component(
+		const imgComponent = new Component(
 			imageContainer.root,
 			'img',
 			['product-card__image'],
@@ -64,5 +64,8 @@ export class CartProduct extends Component {
 			['product-card__text'],
 			'ADD TO CART'
 		);
+		imgComponent.root.onclick = () => {
+			service.openPageDetails(good);
+		};
 	}
 }
