@@ -6,7 +6,6 @@ export class DetailsPage extends Component {
 	stateUpdate: boolean = false;
 	private good: TGood | null = null;
 	photoAlbum: PhotoAlbum;
-	imgItem: Component;
 	itemPrice: Component;
 	h2Name: Component;
 	desc: Component;
@@ -31,8 +30,6 @@ export class DetailsPage extends Component {
 		const detlContainer = new Component(this.root, 'div', [
 			'details__container',
 		]);
-
-		this.imgItem = new Component(detlContainer.root, 'img');
 
 		this.photoAlbum = new PhotoAlbum(detlContainer.root, service);
 
