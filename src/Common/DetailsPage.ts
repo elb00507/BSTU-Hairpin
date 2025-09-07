@@ -70,6 +70,7 @@ export class DetailsPage extends Component {
 			Math.floor(this.good.price / 100).toString() + ' BYN';
 		this.h2Name.root.textContent = this.good.title;
 		this.desc.root.innerHTML = this.good.valueFields[1][1].toString();
+		this.photoAlbum.update([this.good.photoLink, ...this.good.slider]);
 	}
 
 	isGoodInDetailsPage(): boolean {
