@@ -4,16 +4,26 @@ import { LogicService } from '../Services/LogicService';
 
 export class PhotoAlbum extends Component {
 	private mainImage: Component;
+	private thumbsWrapper: Component;
 	private thumbnails: Component[] = [];
 	private countPhoto = 4;
 	constructor(parent: HTMLElement, service: LogicService) {
 		super(parent, 'div', ['photo-album']);
 
-		this.mainImage = new Component(this.el, 'img', ['photo-album__main']);
+		const mainWrapper = new Component(this.el, 'div', [
+			'photo-album__main-wrapper',
+		]);
+		this.mainImage = new Component(mainWrapper.el, 'img', [
+			'photo-album__main',
+		]);
 		(this.mainImage.el as HTMLImageElement).src = '';
 
+		this.thumbsWrapper = new Component(this.el, 'div', ['photo-album__thumbs']);
+
 		for (let i = 0; i < this.countPhoto; i++) {
-			const thumb = new Component(this.el, 'img', ['photo-album__thumb']);
+			const thumb = new Component(this.thumbsWrapper.el, 'img', [
+				'photo-album__thumb',
+			]);
 			(thumb.el as HTMLImageElement).src = '';
 
 			thumb.el.addEventListener('click', () => {
