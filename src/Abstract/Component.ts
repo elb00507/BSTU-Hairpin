@@ -38,6 +38,10 @@ export class Component {
 		this.root.remove();
 	}
 
+	get el(): HTMLElement {
+		return this.root;
+	}
+
 	addClass(className: string) {
 		this.root.classList.add(className);
 	}

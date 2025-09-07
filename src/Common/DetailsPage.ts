@@ -1,10 +1,11 @@
 import { Component } from '../Abstract/Component';
 import { TGood } from '../Abstract/Types';
 import { LogicService } from '../Services/LogicService';
+import { PhotoAlbum } from './photoAlbum';
 export class DetailsPage extends Component {
 	stateUpdate: boolean = false;
 	private good: TGood | null = null;
-
+	photoAlbum: PhotoAlbum;
 	imgItem: Component;
 	itemPrice: Component;
 	h2Name: Component;
@@ -32,6 +33,9 @@ export class DetailsPage extends Component {
 		]);
 
 		this.imgItem = new Component(detlContainer.root, 'img');
+
+		this.photoAlbum = new PhotoAlbum(detlContainer.root, service);
+
 		const infContainer = new Component(detlContainer.root, 'div', [
 			'inf__container',
 		]);
@@ -65,7 +69,6 @@ export class DetailsPage extends Component {
 	update(): void {
 		if (!this.good) return;
 
-		this.imgItem.root.setAttribute('src', this.good.photoLink);
 		this.itemPrice.root.textContent =
 			Math.floor(this.good.price / 100).toString() + ' BYN';
 		this.h2Name.root.textContent = this.good.title;
