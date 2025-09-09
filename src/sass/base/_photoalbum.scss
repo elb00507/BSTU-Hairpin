@@ -1,0 +1,58 @@
+.photo-album {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+}
+
+.photo-album__main {
+	width: 400px;
+	height: 400px;
+	object-fit: contain;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background: #fff;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.photo-album__thumbs {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.photo-album__thumb {
+	width: 60px !important;
+	height: 60px !important;
+	object-fit: cover;
+	cursor: pointer;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	transition: transform 0.2s, border-color 0.2s;
+}
+
+.photo-album__thumb:hover {
+	transform: scale(1.05);
+	border-color: #333;
+}
+
+.photo-album__thumb.hidden {
+	display: none;
+}
+
+@media (max-width: 584px) {
+	.photo-album {
+		padding-top: 90px;
+	}
+}
+
+@media (max-width: 488px) {
+	.photo-album__main {
+		width: 320px;
+		height: 340px;
+	}
+
+	.photo-album {
+		flex-direction: column;
+	}
+}

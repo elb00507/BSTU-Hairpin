@@ -21,6 +21,7 @@ export type TGoodResponse = {
 	count: number;
 	codeCDB: number;
 	id: number;
+	slider: string[];
 	title: string;
 	orderDB: number;
 	price: number;
