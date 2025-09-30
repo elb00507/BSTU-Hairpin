@@ -26,7 +26,7 @@ export class Header extends Component {
 			{ text: 'Shop', href: '#shop' },
 			{ text: 'About', href: '#about' },
 			{ text: 'Cart', href: '#cart' },
-			{ text: 'Sign in', href: '#signin' },
+			{ text: 'Profile', href: '#profile' },
 		];
 
 		this.mobileMenu = new Component(this.root, 'div', [

@@ -33,7 +33,7 @@ class App {
 		const links = {
 			'#': new MainPage(main.root, logicService),
 			'#cart': new CartPage(main.root, logicService),
-			'#signin': new Profile(main.root, logicService),
+			'#profile': new Profile(main.root, logicService),
 			'#shop': new Shop(main.root, logicService),
 			'#about': new About(main.root, logicService),
 			'#details': new DetailsPage(main.root, logicService),
