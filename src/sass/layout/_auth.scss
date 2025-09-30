@@ -1,0 +1,232 @@
+.auth-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 20px;
+	background-color: #f8f8f8;
+
+	&__title {
+		font-size: clamp(1.5rem, 2vw, 2rem);
+		font-weight: bold;
+		color: #000;
+		margin-bottom: 40px;
+		text-align: center;
+		background-color: #e8e8e8;
+		padding: 20px 40px;
+		border-radius: 10px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	> div {
+		width: 100%;
+		max-width: 450px;
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+	}
+
+	> div > div {
+		background-color: #e8e8e8;
+		padding: 30px;
+		border-radius: 10px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	input[type='text'] {
+		width: 100%;
+		padding: 15px 20px;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		background-color: #fff;
+		font-size: 16px;
+		color: #000;
+		box-sizing: border-box;
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+		&:focus {
+			outline: none;
+			border-color: #d3b092;
+			box-shadow: 0 0 0 2px rgba(211, 176, 146, 0.2);
+		}
+
+		&::placeholder {
+			color: #666;
+		}
+	}
+
+	label {
+		display: block;
+		margin-bottom: 8px;
+		font-size: 16px;
+		font-weight: 500;
+		color: #000;
+	}
+
+	input[type='button'] {
+		width: 100%;
+		padding: 15px 20px;
+		background-color: #333;
+		color: #fff;
+		border: none;
+		border-radius: 6px;
+		font-size: 16px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+
+		&:hover {
+			background-color: #555;
+			transform: translateY(-1px);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		&:disabled {
+			background-color: #ccc;
+			cursor: not-allowed;
+			transform: none;
+		}
+	}
+
+	p {
+		text-align: center;
+		margin: 15px 0;
+		font-size: 14px;
+		color: #000;
+		line-height: 1.5;
+	}
+
+	> div:last-child {
+		margin-top: 20px;
+
+		p {
+			margin-bottom: 15px;
+		}
+
+		input[type='button'] {
+			background-color: #333;
+
+			&:hover {
+				background-color: #555;
+			}
+		}
+	}
+
+	> div > div > div {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.div-code {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	> div > div:not(:first-child) {
+		display: none;
+	}
+
+	> div > div:not(:first-child).render {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 15px;
+
+		&__title {
+			font-size: clamp(1.25rem, 4vw, 1.75rem);
+			padding: 15px 25px;
+			margin-bottom: 30px;
+		}
+
+		> div {
+			max-width: 100%;
+		}
+
+		> div > div {
+			padding: 20px;
+			gap: 15px;
+		}
+
+		input[type='text'],
+		input[type='button'] {
+			padding: 12px 15px;
+			font-size: 14px;
+		}
+
+		label {
+			font-size: 14px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		padding: 10px;
+
+		&__title {
+			padding: 12px 20px;
+			margin-bottom: 25px;
+		}
+
+		> div > div {
+			padding: 15px;
+		}
+
+		input[type='text'],
+		input[type='button'] {
+			padding: 10px 12px;
+		}
+	}
+
+	@media (max-width: 320px) {
+		padding: 5px;
+
+		&__title {
+			font-size: clamp(1rem, 5vw, 1.25rem);
+			padding: 10px 15px;
+			margin-bottom: 20px;
+			border-radius: 8px;
+		}
+
+		> div {
+			max-width: 100%;
+			padding: 10px;
+			gap: 15px;
+		}
+
+		> div > div {
+			padding: 12px;
+			gap: 12px;
+		}
+
+		input[type='text'],
+		input[type='button'] {
+			padding: 8px 10px;
+			font-size: 13px;
+		}
+
+		label {
+			font-size: 13px;
+			margin-bottom: 5px;
+		}
+
+		p {
+			font-size: 12px;
+			margin: 10px 0;
+		}
+
+		> div:last-child {
+			margin-top: 15px;
+		}
+	}
+}

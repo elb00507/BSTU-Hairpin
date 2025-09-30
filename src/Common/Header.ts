@@ -80,9 +80,9 @@ export class Header extends Component {
 			headerNav.root,
 			'a',
 			['header__link'],
-			'Sign in',
+			'Profile',
 			['href'],
-			['#signin']
+			['#profile']
 		);
 
 		this.menuIcon = new Component(this.root, 'div', ['header__menu-icon']);
