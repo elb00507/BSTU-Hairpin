@@ -46,13 +46,6 @@ export class Profile extends Component {
 			['person-page__center-title'],
 			'У вас нет заказов'
 		);
-
-		new Component(
-			divCenter.root,
-			'span',
-			['person-page__center-podspan'],
-			'Оформите хотя бы один заказ. Для этого перейдите на страницу каталога.'
-		);
 	}
 
 	renderWithUpdate(): void {
