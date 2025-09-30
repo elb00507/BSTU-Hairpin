@@ -21,8 +21,8 @@ export class Router {
 		const url = window.location.hash.slice(1);
 		const isUserCustomer = this.service.getUserCustomer();
 		switch (url) {
-			case 'catalog':
-				this.links['#catalog'].renderWithUpdate();
+			case 'shop':
+				this.links['#shop'].renderWithUpdate();
 				break;
 
 			case 'auth':
@@ -51,7 +51,7 @@ export class Router {
 				if ((this.links['#details'] as DetailsPage).isGoodInDetailsPage()) {
 					this.links['#details'].renderWithUpdate();
 				} else {
-					window.location.hash = '#catalog';
+					window.location.hash = '#shop';
 				}
 				break;
 			default:

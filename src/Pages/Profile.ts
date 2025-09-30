@@ -46,6 +46,29 @@ export class Profile extends Component {
 			['person-page__center-title'],
 			'У вас нет заказов'
 		);
+
+		const divDescription = new Component(divCenter.root, 'div', [
+			'person-page__center-description',
+		]);
+		const pDescription = new Component(
+			divDescription.root,
+			'p',
+			null,
+			'Оформите хотя бы один заказ. Для этого перейдите на '
+		);
+		const linkCatalog = new Component(
+			pDescription.root,
+			'a',
+			null,
+			'страницу каталога',
+			['href'],
+			['#catalog']
+		);
+
+		linkCatalog.root.onclick = (e) => {
+			e.preventDefault();
+			window.location.hash = '#shop';
+		};
 	}
 
 	renderWithUpdate(): void {
