@@ -30,6 +30,33 @@ export type TGoodResponse = {
 	typeFields: TTypeField[];
 };
 
+export type TCustomer = {
+	id: string;
+	name: string;
+	email: string;
+	operatorType: string;
+	mobile: string;
+	adress: string;
+};
+
+export type TRegistrationResponse = {
+	message: string;
+	customerId: string;
+	error: {
+		message: string;
+		code: number;
+	};
+};
+
+export type TIdentificationResponse = {
+	message: string;
+	customer: TCustomer;
+	error: {
+		message: string;
+		code: number;
+	};
+};
+
 export type TGoodsResponse = {
 	goods: TGoodResponse[];
 };

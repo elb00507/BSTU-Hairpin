@@ -19,22 +19,40 @@ export class Router {
 		});
 
 		const url = window.location.hash.slice(1);
+		const isUserCustomer = this.service.getUserCustomer();
 		switch (url) {
 			case 'shop':
 				this.links['#shop'].renderWithUpdate();
 				break;
+
+			case 'auth':
+				if (!isUserCustomer) {
+					this.links['#auth'].renderWithUpdate();
+				} else {
+					window.location.hash = '#profile';
+				}
+				break;
+			case 'profile':
+				if (isUserCustomer) {
+					this.links['#profile'].renderWithUpdate();
+				} else {
+					window.location.hash = '#auth';
+				}
+				break;
+			case 'reg':
+				if (!isUserCustomer) {
+					this.links['#reg'].renderWithUpdate();
+				} else {
+					window.location.hash = '#profile';
+				}
+				break;
+
 			case 'details':
 				if ((this.links['#details'] as DetailsPage).isGoodInDetailsPage()) {
 					this.links['#details'].renderWithUpdate();
 				} else {
 					window.location.hash = '#shop';
 				}
-				break;
-			case 'cart':
-				this.links['#cart'].renderWithUpdate();
-				break;
-			case 'profile':
-				this.links['#profile'].renderWithUpdate();
 				break;
 			default:
 				this.links['#'].renderWithUpdate();

@@ -26,7 +26,7 @@ export class Header extends Component {
 			{ text: 'Shop', href: '#shop' },
 			{ text: 'About', href: '#about' },
 			{ text: 'Cart', href: '#cart' },
-			{ text: 'Sign in', href: '#signin' },
+			{ text: 'Profile', href: '#profile' },
 		];
 
 		this.mobileMenu = new Component(this.root, 'div', [
@@ -80,9 +80,9 @@ export class Header extends Component {
 			headerNav.root,
 			'a',
 			['header__link'],
-			'Sign in',
+			'Profile',
 			['href'],
-			['#signin']
+			['#profile']
 		);
 
 		this.menuIcon = new Component(this.root, 'div', ['header__menu-icon']);

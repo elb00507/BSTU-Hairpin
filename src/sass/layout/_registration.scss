@@ -1,0 +1,278 @@
+.reg-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 20px;
+	background-color: #f8f8f8;
+
+	h1 {
+		font-size: clamp(1.5rem, 2vw, 2rem);
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 40px;
+		text-align: center;
+		background-color: #e8e8e8;
+		padding: 20px 40px;
+		border-radius: 10px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		width: fit-content;
+		align-self: center;
+	}
+
+	> div {
+		width: 100%;
+		max-width: 500px;
+		background-color: #e8e8e8;
+		padding: 40px;
+		border-radius: 15px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+	}
+
+	> div > div {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 5px;
+		font-size: 16px;
+		font-weight: 500;
+		color: #333;
+	}
+
+	span {
+		display: block;
+		margin-bottom: 5px;
+		font-size: 16px;
+		font-weight: 500;
+		color: #333;
+	}
+
+	input[type='text'] {
+		width: 100%;
+		padding: 15px 20px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #fff;
+		font-size: 16px;
+		color: #000;
+		box-sizing: border-box;
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+		&:focus {
+			outline: none;
+			border-color: #d3b092;
+			box-shadow: 0 0 0 2px rgba(211, 176, 146, 0.2);
+		}
+
+		&::placeholder {
+			color: #666;
+		}
+	}
+
+	select {
+		width: 100%;
+		padding: 15px 20px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		background-color: #fff;
+		font-size: 16px;
+		color: #000;
+		box-sizing: border-box;
+		transition: border-color 0.3s ease, box-shadow 0.3s ease;
+		cursor: pointer;
+
+		&:focus {
+			outline: none;
+			border-color: #d3b092;
+			box-shadow: 0 0 0 2px rgba(211, 176, 146, 0.2);
+		}
+
+		appearance: none;
+		background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right 15px center;
+		background-size: 16px;
+		padding-right: 45px;
+	}
+
+	// Buttons
+	input[type='button'] {
+		width: 100%;
+		padding: 15px 20px;
+		background-color: #333;
+		color: #fff;
+		border: none;
+		border-radius: 8px;
+		font-size: 16px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease,
+			box-shadow 0.2s ease;
+		margin-top: 10px;
+
+		&:hover {
+			background-color: #555;
+			transform: translateY(-1px);
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+
+		&:disabled {
+			background-color: #ccc;
+			cursor: not-allowed;
+			transform: none;
+			box-shadow: none;
+		}
+	}
+
+	.reg-button {
+		margin-top: 15px;
+	}
+
+	p {
+		text-align: center;
+		margin: 20px 0;
+		font-size: 14px;
+		color: #000;
+		line-height: 1.5;
+	}
+
+	> div:not(:first-child).render {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	@media (max-width: 768px) {
+		padding: 15px;
+
+		h1 {
+			font-size: clamp(1.25rem, 4vw, 1.75rem);
+			padding: 15px 25px;
+			margin-bottom: 30px;
+		}
+
+		> div {
+			max-width: 100%;
+			padding: 25px;
+			gap: 20px;
+		}
+
+		input[type='text'],
+		select,
+		input[type='button'] {
+			padding: 12px 15px;
+			font-size: 14px;
+		}
+
+		label,
+		span {
+			font-size: 14px;
+		}
+
+		select {
+			padding-right: 40px;
+			background-size: 14px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		padding: 10px;
+
+		h1 {
+			padding: 12px 20px;
+			margin-bottom: 25px;
+		}
+
+		> div {
+			padding: 20px;
+		}
+
+		input[type='text'],
+		select,
+		input[type='button'] {
+			padding: 10px 12px;
+		}
+	}
+
+	@media (max-width: 320px) {
+		padding: 5px;
+
+		h1 {
+			font-size: clamp(1rem, 5vw, 1.25rem);
+			padding: 10px 15px;
+			margin-bottom: 20px;
+			border-radius: 8px;
+		}
+
+		> div {
+			max-width: 100%;
+			padding: 15px;
+			gap: 15px;
+			border-radius: 10px;
+		}
+
+		> div > div {
+			gap: 6px;
+		}
+
+		input[type='text'],
+		select,
+		input[type='button'] {
+			padding: 8px 10px;
+			font-size: 13px;
+			border-radius: 6px;
+		}
+
+		label,
+		span {
+			font-size: 13px;
+			margin-bottom: 4px;
+		}
+
+		select {
+			padding-right: 35px;
+			background-size: 12px;
+			background-position: right 10px center;
+		}
+
+		p {
+			font-size: 12px;
+			margin: 10px 0;
+		}
+
+		.reg-button {
+			margin-top: 10px;
+		}
+	}
+
+	*:focus {
+		outline: 2px solid #d3b092;
+		outline-offset: 2px;
+	}
+
+	select option {
+		background-color: #fff;
+		color: #000;
+		padding: 10px;
+	}
+
+	input:invalid {
+		border-color: #e74c3c;
+	}
+
+	input:valid {
+		border-color: #27ae60;
+	}
+}

@@ -11,6 +11,8 @@ import { DBService } from './Services/DBService';
 import { LogicService } from './Services/LogicService';
 import { Router } from './Common/Router';
 import { DetailsPage } from './Common/DetailsPage';
+import { AuthPage } from './Pages/authpage';
+import { RegPage } from './Pages/regpage';
 
 declare global {
 	interface Window {
@@ -31,10 +33,12 @@ class App {
 		const links = {
 			'#': new MainPage(main.root, logicService),
 			'#cart': new CartPage(main.root, logicService),
-			'#signin': new Profile(main.root, logicService),
+			'#profile': new Profile(main.root, logicService),
 			'#shop': new Shop(main.root, logicService),
 			'#about': new About(main.root, logicService),
 			'#details': new DetailsPage(main.root, logicService),
+			'#auth': new AuthPage(main.root, logicService),
+			'#reg': new RegPage(main.root, logicService),
 		};
 
 		new Router(links, logicService);
