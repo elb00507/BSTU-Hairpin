@@ -9,6 +9,7 @@ import { Profile } from './Pages/Profile';
 import { Shop } from './Pages/Shop';
 import { DBService } from './Services/DBService';
 import { LogicService } from './Services/LogicService';
+import { CookieService } from './Services/CookieService';
 import { Router } from './Common/Router';
 import { DetailsPage } from './Common/DetailsPage';
 import { AuthPage } from './Pages/authpage';
@@ -21,7 +22,18 @@ declare global {
 }
 
 const dbService = new DBService();
-const logicService = new LogicService(dbService);
+const cookieService = new CookieService();
+const logicService = new LogicService(dbService, cookieService);
+
+// Подписка на формирование контента сайта после автоматической авторизации
+logicService.addListener('autoAuth', () => {
+	if (!window.app) {
+		window.app = new App(document.body);
+	}
+});
+
+// Вызов метода, который инициирует проверку cookie и автоматическую авторизацию
+logicService.updateUser();
 
 class App {
 	constructor(parent: HTMLElement) {
@@ -47,4 +59,5 @@ class App {
 	}
 }
 
-window.app = new App(document.body);
+// Инициализация приложения происходит только после события 'autoAuth'
+// которое генерируется в методе updateUser() после проверки cookie
