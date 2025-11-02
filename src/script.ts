@@ -15,33 +15,31 @@ import { DetailsPage } from './Common/DetailsPage';
 import { AuthPage } from './Pages/authpage';
 import { RegPage } from './Pages/regpage';
 
-class App {
-	constructor(parent: HTMLElement, private logicService: LogicService) {
-		const wrap = new Component(parent, 'div', ['wrapper']);
-
-		new Header(wrap.root, this.logicService);
-		const main = new Component(wrap.root, 'main');
-
-		const links = {
-			'#': new MainPage(main.root, this.logicService),
-			'#cart': new CartPage(main.root, this.logicService),
-			'#profile': new Profile(main.root, this.logicService),
-			'#shop': new Shop(main.root, this.logicService),
-			'#about': new About(main.root, this.logicService),
-			'#details': new DetailsPage(main.root, this.logicService),
-			'#auth': new AuthPage(main.root, this.logicService),
-			'#reg': new RegPage(main.root, this.logicService),
-		};
-
-		new Router(links, this.logicService);
-
-		new Footer(wrap.root);
-	}
-}
-
 declare global {
 	interface Window {
 		app: App;
+	}
+}
+
+class App {
+	constructor(parent: HTMLElement, private service: LogicService) {
+		const wrapper = new Component(parent, 'div', ['wrapper']);
+		const header = new Header(wrapper.root, this.service);
+		const main = new Component(wrapper.root, 'main');
+
+		const routes = {
+			'#': new MainPage(main.root, this.service),
+			'#cart': new CartPage(main.root, this.service),
+			'#profile': new Profile(main.root, this.service),
+			'#shop': new Shop(main.root, this.service),
+			'#about': new About(main.root, this.service),
+			'#details': new DetailsPage(main.root, this.service),
+			'#auth': new AuthPage(main.root, this.service),
+			'#reg': new RegPage(main.root, this.service),
+		};
+
+		new Router(routes, this.service);
+		new Footer(wrapper.root);
 	}
 }
 
@@ -49,15 +47,10 @@ const dbService = new DBService();
 const cookieService = new CookieService();
 const logicService = new LogicService(dbService, cookieService);
 
-// Подписка на формирование контента сайта после автоматической авторизации
 logicService.addListener('autoAuth', () => {
 	if (!window.app) {
 		window.app = new App(document.body, logicService);
 	}
 });
 
-// Вызов метода, который инициирует проверку cookie и автоматическую авторизацию
 logicService.updateUser();
-
-// Инициализация приложения происходит только после события 'autoAuth'
-// которое генерируется в методе updateUser() после проверки cookie

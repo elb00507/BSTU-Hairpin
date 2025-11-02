@@ -131,8 +131,7 @@ export class LogicService extends Observer {
 			.confirmRegistrationCustomer(customerId, code)
 			.then((response) => {
 				if (response) {
-					// Сохраняем данные пользователя в cookie при успешной регистрации
-					if (response.error.code == 0) {
+					if (response.error.code === 0) {
 						this.cookieService.saveUser(customerId, code);
 					}
 					this.disptach('end_registration', response);
@@ -157,9 +156,8 @@ export class LogicService extends Observer {
 			.confirmIdentificationCustomer(customerId, code)
 			.then((response) => {
 				if (response) {
-					if (response.error.code == 0) {
+					if (response.error.code === 0) {
 						this.userCustomer = response.customer;
-						// Сохраняем данные пользователя в cookie при успешной авторизации
 						this.cookieService.saveUser(customerId, code);
 					}
 					this.disptach('end_identification', response);
@@ -169,38 +167,29 @@ export class LogicService extends Observer {
 			});
 	}
 
-	/**
-	 * Проверяет cookie и выполняет автоматическую авторизацию пользователя
-	 */
 	async updateUser(): Promise<void> {
 		const userData = this.cookieService.getUser();
 
-		if (userData && userData.userId && userData.code) {
+		if (userData?.userId && userData?.code) {
 			try {
-				// Пытаемся автоматически авторизовать пользователя по данным из cookie
 				const response = await this.dbService.confirmIdentificationCustomer(
 					userData.userId,
 					userData.code
 				);
 
-				if (response && response.error.code == 0) {
+				if (response?.error.code === 0) {
 					this.userCustomer = response.customer;
-					// Уведомляем о успешной автоматической авторизации
 					this.disptach('autoAuth');
 				} else {
-					// Если авторизация не удалась, очищаем невалидные cookie
 					this.cookieService.clearUser();
-					// Инициализируем приложение без авторизации
 					this.disptach('autoAuth');
 				}
 			} catch (error) {
 				console.error('Ошибка при автоматической авторизации:', error);
 				this.cookieService.clearUser();
-				// Инициализируем приложение без авторизации
 				this.disptach('autoAuth');
 			}
 		} else {
-			// Cookie не найдены, инициализируем приложение без авторизации
 			this.disptach('autoAuth');
 		}
 	}
@@ -209,9 +198,6 @@ export class LogicService extends Observer {
 		return this.userCustomer;
 	}
 
-	/**
-	 * Выход пользователя - очищает cookie и состояние пользователя
-	 */
 	logout(): void {
 		this.cookieService.clearUser();
 		this.userCustomer = null;
