@@ -1,5 +1,6 @@
 import { Observer } from '../Abstract/Observer';
 import { DBService } from './DBService';
+import { CookieService } from './CookieService';
 import {
 	TGood,
 	TTypeField,
@@ -15,7 +16,10 @@ export class LogicService extends Observer {
 	private currentFilter: string | null = null;
 	private currentSortAsc: boolean | null = null;
 	userCustomer: TCustomer | null = null;
-	constructor(private dbService: DBService) {
+	constructor(
+		private dbService: DBService,
+		private cookieService: CookieService
+	) {
 		super();
 	}
 
@@ -127,6 +131,9 @@ export class LogicService extends Observer {
 			.confirmRegistrationCustomer(customerId, code)
 			.then((response) => {
 				if (response) {
+					if (response.error.code === 0) {
+						this.cookieService.saveUser(customerId, code);
+					}
 					this.disptach('end_registration', response);
 				} else {
 					alert('Сбой регистрации');
@@ -149,7 +156,10 @@ export class LogicService extends Observer {
 			.confirmIdentificationCustomer(customerId, code)
 			.then((response) => {
 				if (response) {
-					if (response.error.code == 0) this.userCustomer = response.customer;
+					if (response.error.code === 0) {
+						this.userCustomer = response.customer;
+						this.cookieService.saveUser(customerId, code);
+					}
 					this.disptach('end_identification', response);
 				} else {
 					alert('Сбой авторизации');
@@ -157,7 +167,40 @@ export class LogicService extends Observer {
 			});
 	}
 
+	async updateUser(): Promise<void> {
+		const userData = this.cookieService.getUser();
+
+		if (userData?.userId && userData?.code) {
+			try {
+				const response = await this.dbService.confirmIdentificationCustomer(
+					userData.userId,
+					userData.code
+				);
+
+				if (response?.error.code === 0) {
+					this.userCustomer = response.customer;
+					this.disptach('autoAuth');
+				} else {
+					this.cookieService.clearUser();
+					this.disptach('autoAuth');
+				}
+			} catch (error) {
+				console.error('Ошибка при автоматической авторизации:', error);
+				this.cookieService.clearUser();
+				this.disptach('autoAuth');
+			}
+		} else {
+			this.disptach('autoAuth');
+		}
+	}
+
 	getUserCustomer(): TCustomer | null {
 		return this.userCustomer;
+	}
+
+	logout(): void {
+		this.cookieService.clearUser();
+		this.userCustomer = null;
+		this.disptach('logout');
 	}
 }
