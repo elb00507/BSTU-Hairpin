@@ -58,14 +58,30 @@ export class CartProduct extends Component {
 
 		const containerCart = new Component(this.root, 'div', ['card__container']);
 
-		new Component(
-			containerCart.root,
-			'p',
-			['product-card__text'],
-			'ADD TO CART'
+		const linCart = new Component(
+			contentContainer.root,
+			'a',
+			['card__button-cart'],
+			'В корзину',
+			['href'],
+			['#cart']
 		);
 		imgComponent.root.onclick = () => {
 			service.openPageDetails(good);
 		};
+		linCart.root.addEventListener('click', async (e) => {
+			e.preventDefault();
+			await this.service.addGoodToBasket(this.good);
+			window.location.hash = '#cart';
+		});
+
+		// Деактивируем кнопку, если товар уже в корзине
+		this.service.addListener('basket_update', () => {
+			const inBasket = !!this.service.getGoodFromBasket(String(this.good.id));
+			(linCart.root as HTMLAnchorElement).classList.toggle(
+				'card__button-cart--disabled',
+				inBasket
+			);
+		});
 	}
 }
