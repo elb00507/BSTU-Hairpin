@@ -8,6 +8,8 @@ import {
 	TValueField,
 	TGoodResponse,
 	TCustomer,
+	TBasket,
+	TGoodBasket,
 } from '../Abstract/Types';
 
 export class LogicService extends Observer {
@@ -16,6 +18,7 @@ export class LogicService extends Observer {
 	private currentFilter: string | null = null;
 	private currentSortAsc: boolean | null = null;
 	userCustomer: TCustomer | null = null;
+	private basket: TBasket | null = null;
 	constructor(
 		private dbService: DBService,
 		private cookieService: CookieService
@@ -133,6 +136,7 @@ export class LogicService extends Observer {
 				if (response) {
 					if (response.error.code === 0) {
 						this.cookieService.saveUser(customerId, code);
+						this.refreshBasket();
 					}
 					this.disptach('end_registration', response);
 				} else {
@@ -202,5 +206,90 @@ export class LogicService extends Observer {
 		this.cookieService.clearUser();
 		this.userCustomer = null;
 		this.disptach('logout');
+	}
+
+	getBasket(): TBasket | null {
+		return this.basket;
+	}
+
+	getGoodFromBasket(goodId: string): TGoodBasket | null {
+		if (!this.basket) return null;
+		const good = this.basket.goods.find((g) => g.id === goodId);
+		return good || null;
+	}
+
+	private async refreshBasket(): Promise<void> {
+		if (!this.userCustomer) return;
+		try {
+			const basket = await this.dbService.getBasket(this.userCustomer.id);
+			this.basket = basket;
+			this.disptach('basket_update', basket);
+		} catch (e) {
+			console.error('Ошибка получения корзины', e);
+		}
+	}
+
+	async addGoodToBasket(good: TGood): Promise<void> {
+		if (!this.userCustomer) return;
+
+		const goodId = String(good.id);
+		const oldGood = this.getGoodFromBasket(goodId);
+		if (oldGood) return;
+
+		const response = await this.dbService.addGoodToBasket(
+			this.userCustomer.id,
+			goodId,
+			1
+		);
+
+		if (response.error.code === 0) {
+			await this.refreshBasket();
+		} else {
+			alert(response.error.message);
+		}
+	}
+
+	async removeGoodFromBasket(goodId: string): Promise<void> {
+		if (!this.userCustomer) return;
+
+		const response = await this.dbService.addGoodToBasket(
+			this.userCustomer.id,
+			goodId,
+			0
+		);
+
+		if (response.error.code === 0) {
+			await this.refreshBasket();
+		} else {
+			alert(response.error.message);
+		}
+	}
+
+	async changeGoodToBasket(goodId: string, count: number): Promise<void> {
+		if (!this.userCustomer) return;
+
+		const response = await this.dbService.addGoodToBasket(
+			this.userCustomer.id,
+			goodId,
+			count
+		);
+
+		if (response.error.code === 0) {
+			await this.refreshBasket();
+		} else {
+			alert(response.error.message);
+		}
+	}
+
+	async closeBasket(): Promise<void> {
+		if (!this.userCustomer) return;
+
+		const response = await this.dbService.closeBasket(this.userCustomer.id);
+
+		if (response.error.code === 0) {
+			await this.refreshBasket();
+		} else {
+			alert(response.error.message);
+		}
 	}
 }
