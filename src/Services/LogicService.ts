@@ -246,22 +246,45 @@ export class LogicService extends Observer {
 	}
 
 	async addGoodToBasket(good: TGood): Promise<void> {
-		if (!this.userCustomer) return;
+		if (!this.userCustomer) {
+			alert('Для добавления товара в корзину необходимо авторизоваться');
+			window.location.hash = '#auth';
+			return;
+		}
 
 		const goodId = String(good.id);
 		const oldGood = this.getGoodFromBasket(goodId);
-		if (oldGood) return;
+		if (oldGood) {
+			return;
+		}
 
-		const response = await this.dbService.addGoodToBasket(
-			this.userCustomer.id,
-			goodId,
-			1
-		);
+		try {
+			const userData = this.cookieService.getUser();
+			if (!userData?.code) {
+				alert('Ошибка авторизации. Пожалуйста, войдите заново');
+				window.location.hash = '#auth';
+				return;
+			}
 
-		if (response.error.code === 0) {
-			await this.refreshBasket();
-		} else {
-			alert(response.error.message);
+			const response = await this.dbService.addGoodToBasket(
+				this.userCustomer.id,
+				goodId,
+				1
+			);
+
+			if (response?.error?.code === 0) {
+				await this.refreshBasket();
+			} else {
+				const errorMsg =
+					response?.error?.message ||
+					response?.message ||
+					'Ошибка при добавлении товара в корзину';
+				console.error('Ошибка добавления в корзину:', response);
+				alert(errorMsg);
+			}
+		} catch (error) {
+			console.error('Ошибка при добавлении товара в корзину:', error);
+			alert('Произошла ошибка при добавлении товара в корзину');
 		}
 	}
 

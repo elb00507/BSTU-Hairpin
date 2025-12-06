@@ -79,7 +79,10 @@ export class CartProduct extends Component {
 				return;
 			}
 			await this.service.addGoodToBasket(this.good);
-			window.location.hash = '#cart';
+			const basket = this.service.getBasket();
+			if (basket && basket.goods.some((g) => g.id === String(this.good.id))) {
+				window.location.hash = '#cart';
+			}
 		});
 
 		const updateButtonState = () => {

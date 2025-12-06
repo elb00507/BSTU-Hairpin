@@ -102,13 +102,34 @@ export class DBService {
 		goodId: string,
 		count: number
 	): Promise<TError> {
+		if (!this.pinCode) {
+			console.error('PIN код не установлен');
+			return {
+				message: 'PIN код не установлен',
+				error: {
+					message: 'Необходимо авторизоваться',
+					code: -1,
+				},
+			};
+		}
 		const link =
 			this.domain +
 			'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=172&sgr_r=0&stst_=0&shead_=0&sadd_=5,' +
 			`${this.idPriceList},85,${customerId},${this.pinCode},${goodId},${count}`;
-		const response = await fetch(link);
-		const data = (await response.json()) as TError;
-		return data;
+		try {
+			const response = await fetch(link);
+			const data = (await response.json()) as TError;
+			return data;
+		} catch (error) {
+			console.error('Ошибка при добавлении товара в корзину:', error);
+			return {
+				message: 'Ошибка сети',
+				error: {
+					message: 'Не удалось добавить товар в корзину',
+					code: -1,
+				},
+			};
+		}
 	}
 	async closeBasket(customerId: string): Promise<TError> {
 		const link =
