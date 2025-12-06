@@ -33,13 +33,28 @@ export class CartPage extends Component {
 		this.render();
 	}
 
-	update(): void {
+	async update(): Promise<void> {
 		const basket = this.service.getBasket();
 		if (basket) {
 			this.renderBasket(basket);
 		} else {
-			// если корзина ещё не подгружена, покажем пустой интерфейс
-			this.renderBasket({ id: '', goods: [], total: 0 });
+			// если корзина ещё не подгружена, попробуем загрузить её
+			const user = this.service.getUserCustomer();
+			if (user) {
+				// Пользователь авторизован, но корзина не загружена
+				// Попробуем загрузить корзину явно
+				await this.service.loadBasketIfNeeded();
+				const loadedBasket = this.service.getBasket();
+				if (loadedBasket) {
+					this.renderBasket(loadedBasket);
+				} else {
+					// Если не удалось загрузить, показываем пустую корзину
+					this.renderBasket({ id: '', goods: [], total: 0 });
+				}
+			} else {
+				// Пользователь не авторизован
+				this.renderBasket({ id: '', goods: [], total: 0 });
+			}
 		}
 	}
 

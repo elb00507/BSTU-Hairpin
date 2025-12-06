@@ -17,8 +17,8 @@ export class LogicService extends Observer {
 	private filteredGoods: TGoodResponse[] | null = null;
 	private currentFilter: string | null = null;
 	private currentSortAsc: boolean | null = null;
-	userCustomer: TCustomer | null = null;
 	private basket: TBasket | null = null;
+	userCustomer: TCustomer | null = null;
 	constructor(
 		private dbService: DBService,
 		private cookieService: CookieService
@@ -158,11 +158,12 @@ export class LogicService extends Observer {
 	confirmIdentificationCustomer(customerId: string, code: string): void {
 		this.dbService
 			.confirmIdentificationCustomer(customerId, code)
-			.then((response) => {
+			.then(async (response) => {
 				if (response) {
 					if (response.error.code === 0) {
 						this.userCustomer = response.customer;
 						this.cookieService.saveUser(customerId, code);
+						await this.refreshBasket();
 					}
 					this.disptach('end_identification', response);
 				} else {
@@ -183,6 +184,7 @@ export class LogicService extends Observer {
 
 				if (response?.error.code === 0) {
 					this.userCustomer = response.customer;
+					await this.refreshBasket();
 					this.disptach('autoAuth');
 				} else {
 					this.cookieService.clearUser();
@@ -212,6 +214,12 @@ export class LogicService extends Observer {
 		return this.basket;
 	}
 
+	async loadBasketIfNeeded(): Promise<void> {
+		if (this.userCustomer && !this.basket) {
+			await this.refreshBasket();
+		}
+	}
+
 	getGoodFromBasket(goodId: string): TGoodBasket | null {
 		if (!this.basket) return null;
 		const good = this.basket.goods.find((g) => g.id === goodId);
@@ -219,13 +227,21 @@ export class LogicService extends Observer {
 	}
 
 	private async refreshBasket(): Promise<void> {
-		if (!this.userCustomer) return;
+		if (!this.userCustomer) {
+			console.warn(
+				'Попытка загрузить корзину без авторизованного пользователя'
+			);
+			return;
+		}
 		try {
 			const basket = await this.dbService.getBasket(this.userCustomer.id);
 			this.basket = basket;
 			this.disptach('basket_update', basket);
 		} catch (e) {
 			console.error('Ошибка получения корзины', e);
+			// Устанавливаем пустую корзину при ошибке
+			this.basket = { id: '', goods: [], total: 0 };
+			this.disptach('basket_update', this.basket);
 		}
 	}
 

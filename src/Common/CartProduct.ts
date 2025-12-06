@@ -71,17 +71,25 @@ export class CartProduct extends Component {
 		};
 		linCart.root.addEventListener('click', async (e) => {
 			e.preventDefault();
+			if (
+				(linCart.root as HTMLAnchorElement).classList.contains(
+					'card__button-cart--disabled'
+				)
+			) {
+				return;
+			}
 			await this.service.addGoodToBasket(this.good);
 			window.location.hash = '#cart';
 		});
 
-		// Деактивируем кнопку, если товар уже в корзине
-		this.service.addListener('basket_update', () => {
+		const updateButtonState = () => {
 			const inBasket = !!this.service.getGoodFromBasket(String(this.good.id));
 			(linCart.root as HTMLAnchorElement).classList.toggle(
 				'card__button-cart--disabled',
 				inBasket
 			);
-		});
+		};
+		this.service.addListener('basket_update', updateButtonState);
+		updateButtonState();
 	}
 }
