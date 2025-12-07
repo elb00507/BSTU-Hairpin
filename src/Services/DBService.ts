@@ -11,7 +11,7 @@ export class DBService {
 	private domain = 'https://polyteh.cis.by/cgi-bin/';
 	private pinCode = '';
 	private keyShop = '792513588';
-	private idPriceList = '186';
+	private idPriceList = '158';
 
 	async getTypesGoods(): Promise<TTypesGoods> {
 		const response = await fetch(
