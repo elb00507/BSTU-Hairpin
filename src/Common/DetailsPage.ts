@@ -9,6 +9,7 @@ export class DetailsPage extends Component {
 	itemPrice: Component;
 	h2Name: Component;
 	desc: Component;
+	private cartButton: Component | null = null;
 	constructor(parent: HTMLElement, private service: LogicService) {
 		super(parent, 'div', ['details__pages', 'abel']);
 
@@ -45,6 +46,31 @@ export class DetailsPage extends Component {
 			'details__pages_price',
 		]);
 
+		this.cartButton = new Component(
+			infContainer.root,
+			'button',
+			['card__button-cart', 'details__cart-button'],
+			'В корзину'
+		);
+
+		this.cartButton.root.addEventListener('click', async () => {
+			if (!this.good) return;
+			if (
+				(this.cartButton!.root as HTMLButtonElement).classList.contains(
+					'card__button-cart--disabled'
+				)
+			) {
+				return;
+			}
+			await this.service.addGoodToBasket(this.good);
+			this.updateButtonState();
+		});
+
+		const updateButtonState = () => {
+			this.updateButtonState();
+		};
+		this.service.addListener('basket_update', updateButtonState);
+
 		service.addListener('updatePageDetails', (good) => {
 			this.good = good as TGood;
 			this.update();
@@ -63,7 +89,7 @@ export class DetailsPage extends Component {
 		this.render();
 	}
 
-	update(): void {
+	async update(): Promise<void> {
 		if (!this.good) return;
 
 		this.itemPrice.root.textContent =
@@ -71,6 +97,19 @@ export class DetailsPage extends Component {
 		this.h2Name.root.textContent = this.good.title;
 		this.desc.root.innerHTML = this.good.valueFields[1][1].toString();
 		this.photoAlbum.update([this.good.photoLink, ...this.good.slider]);
+		
+		await this.service.loadBasketIfNeeded();
+		this.updateButtonState();
+	}
+
+	private updateButtonState(): void {
+		if (!this.cartButton || !this.good) return;
+
+		const inBasket = !!this.service.getGoodFromBasket(String(this.good.id));
+		(this.cartButton.root as HTMLButtonElement).classList.toggle(
+			'card__button-cart--disabled',
+			inBasket
+		);
 	}
 
 	isGoodInDetailsPage(): boolean {

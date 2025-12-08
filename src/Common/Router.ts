@@ -46,7 +46,9 @@ export class Router {
 					window.location.hash = '#profile';
 				}
 				break;
-
+			case 'cart':
+				this.links['#cart'].renderWithUpdate();
+				break;
 			case 'details':
 				if ((this.links['#details'] as DetailsPage).isGoodInDetailsPage()) {
 					this.links['#details'].renderWithUpdate();

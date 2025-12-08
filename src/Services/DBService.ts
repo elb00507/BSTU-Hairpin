@@ -3,12 +3,15 @@ import {
 	TIdentificationResponse,
 	TRegistrationResponse,
 	TTypesGoods,
+	TBasket,
+	TError,
 } from '../Abstract/Types';
 
 export class DBService {
 	private domain = 'https://polyteh.cis.by/cgi-bin/';
 	private pinCode = '';
 	private keyShop = '792513588';
+	private idPriceList = '158';
 
 	async getTypesGoods(): Promise<TTypesGoods> {
 		const response = await fetch(
@@ -82,6 +85,59 @@ export class DBService {
 
 		const response = await fetch(link);
 		const data = (await response.json()) as TIdentificationResponse;
+		return data;
+	}
+
+	async getBasket(customerId: string): Promise<TBasket> {
+		const link =
+			this.domain +
+			'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=171&sgr_r=0&stst_=0&shead_=0&sadd_=5,' +
+			`${this.idPriceList},85,${customerId},${this.pinCode}`;
+		const response = await fetch(link);
+		const data = (await response.json()) as TBasket;
+		return data;
+	}
+	async addGoodToBasket(
+		customerId: string,
+		goodId: string,
+		count: number
+	): Promise<TError> {
+		if (!this.pinCode) {
+			console.error('PIN код не установлен');
+			return {
+				message: 'PIN код не установлен',
+				error: {
+					message: 'Необходимо авторизоваться',
+					code: -1,
+				},
+			};
+		}
+		const link =
+			this.domain +
+			'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=172&sgr_r=0&stst_=0&shead_=0&sadd_=5,' +
+			`${this.idPriceList},85,${customerId},${this.pinCode},${goodId},${count}`;
+		try {
+			const response = await fetch(link);
+			const data = (await response.json()) as TError;
+			return data;
+		} catch (error) {
+			console.error('Ошибка при добавлении товара в корзину:', error);
+			return {
+				message: 'Ошибка сети',
+				error: {
+					message: 'Не удалось добавить товар в корзину',
+					code: -1,
+				},
+			};
+		}
+	}
+	async closeBasket(customerId: string): Promise<TError> {
+		const link =
+			this.domain +
+			'is10_09?sSd_=0&sfil_n=2&svid_=3&sgr_l=160&sit_l=173&sgr_r=0&stst_=0&shead_=0&sadd_=5,' +
+			`${this.idPriceList},85,${customerId},${this.pinCode}`;
+		const response = await fetch(link);
+		const data = (await response.json()) as TError;
 		return data;
 	}
 }

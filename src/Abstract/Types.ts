@@ -64,3 +64,31 @@ export type TGoodsResponse = {
 export type TGood = TGoodResponse & {
 	fields: Record<string, string | number | Date>;
 };
+
+export type TGoodBasket = {
+	id: string;
+	count: number;
+	price: number;
+	summa: number;
+	discount: {
+		summa: number;
+		id: string;
+		percent: number;
+	};
+	title: string;
+	fields: Record<string, string | number | Date>[];
+};
+
+export type TBasket = {
+	id: string;
+	goods: TGoodBasket[];
+	total: number;
+};
+
+export type TError = {
+	message: string;
+	error: {
+		message: string;
+		code: number;
+	};
+};
